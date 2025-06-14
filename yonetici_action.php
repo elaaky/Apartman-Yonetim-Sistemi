@@ -30,11 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $sql = "CALL sp_YoneticiEkle(:ad, :soyad, :kullanici_adi, :sifre, :email, :telefon)";
             $stmt = $db->prepare($sql);
             $stmt->execute([
-                ':ad' => $ad, 
-                ':soyad' => $soyad, 
-                ':kullanici_adi' => $kullanici_adi, 
+                ':ad' => $ad,
+                ':soyad' => $soyad,
+                ':kullanici_adi' => $kullanici_adi,
                 ':sifre' => $hashed_sifre, // Hash'lenmiş şifreyi gönder
-                ':email' => $email, 
+                ':email' => $email,
                 ':telefon' => $telefon
             ]);
             header('Location: yoneticiler.php?status=added');
@@ -42,9 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         } catch (PDOException $e) {
             // Kullanıcı adı veya email zaten varsa veritabanı unique kısıtlaması hatası verir.
             if ($e->getCode() == 23000) {
-                 header('Location: yoneticiler.php?error=userexists');
+                header('Location: yoneticiler.php?error=userexists');
             } else {
-                 die("Yönetici ekleme hatası: " . $e->getMessage());
+                die("Yönetici ekleme hatası: " . $e->getMessage());
             }
         }
     }
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
 
         // Kendi hesabını pasif yapmasını engelle
-        if($yonetici_id == $_SESSION['yonetici_id'] && $aktif_mi == 0) {
+        if ($yonetici_id == $_SESSION['yonetici_id'] && $aktif_mi == 0) {
             header('Location: yoneticiler.php?error=selfdeactivate');
             exit();
         }
@@ -76,48 +76,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $stmt = $db->prepare($sql);
             $stmt->execute([
                 ':id' => $yonetici_id,
-                ':ad' => $ad, 
-                ':soyad' => $soyad, 
-                ':email' => $email, 
+                ':ad' => $ad,
+                ':soyad' => $soyad,
+                ':email' => $email,
                 ':telefon' => $telefon,
                 ':aktif_mi' => $aktif_mi
             ]);
             header('Location: yoneticiler.php?status=updated');
             exit();
         } catch (PDOException $e) {
-             if ($e->getCode() == 23000) {
-                 header('Location: yoneticiler.php?error=userexists');
+            if ($e->getCode() == 23000) {
+                header('Location: yoneticiler.php?error=userexists');
             } else {
-                 die("Yönetici güncelleme hatası: " . $e->getMessage());
+                die("Yönetici güncelleme hatası: " . $e->getMessage());
             }
         }
     }
 
     // YÖNETİCİ SİLME
-if ($_POST['action'] == 'delete') {
-    $yonetici_id = $_POST['yonetici_id'];
-    
-    // Kendi kendini silmeyi engelle
-    if (empty($yonetici_id) || $yonetici_id == $_SESSION['yonetici_id']) {
-        header('Location: yoneticiler.php?error=selfdelete');
-        exit();
-    }
+    if ($_POST['action'] == 'delete') {
+        $yonetici_id = $_POST['yonetici_id'];
 
-    try {
-        // Stored Procedure 'sp_YoneticiSil' :id parametresini bekliyor.
-        $sql = "CALL sp_YoneticiSil(:id)";
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':id', $yonetici_id, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        header('Location: yoneticiler.php?status=deleted');
-        exit();
-    } catch (PDOException $e) {
-        // Bu yönetici başka tablolarda (giderler, duyurular) kullanılıyorsa,
-        // yabancı anahtar kısıtlaması nedeniyle silme işlemi başarısız olur.
-        header('Location: yoneticiler.php?error=deletefailed_inuse');
-        exit();
+        // Kendi kendini silmeyi engelle
+        if (empty($yonetici_id) || $yonetici_id == $_SESSION['yonetici_id']) {
+            header('Location: yoneticiler.php?error=selfdelete');
+            exit();
+        }
+
+        try {
+            // Stored Procedure 'sp_YoneticiSil' :id parametresini bekliyor.
+            $sql = "CALL sp_YoneticiSil(:id)";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':id', $yonetici_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            header('Location: yoneticiler.php?status=deleted');
+            exit();
+        } catch (PDOException $e) {
+            // Bu yönetici başka tablolarda (giderler, duyurular) kullanılıyorsa,
+            // yabancı anahtar kısıtlaması nedeniyle silme işlemi başarısız olur.
+            header('Location: yoneticiler.php?error=deletefailed_inuse');
+            exit();
+        }
     }
 }
-}
-?>

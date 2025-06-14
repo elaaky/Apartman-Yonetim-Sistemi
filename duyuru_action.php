@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             die("Duyuru ekleme hatası: " . $e->getMessage());
         }
     }
-    
+
     // Duyuru Silme
     if ($_POST['action'] == 'delete') {
         $duyuru_id = $_POST['duyuru_id'];
@@ -50,4 +50,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
     }
 }
-?>

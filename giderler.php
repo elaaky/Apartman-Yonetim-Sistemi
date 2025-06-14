@@ -15,9 +15,9 @@ try {
     $stmt = $db->query($sql);
     $giderler = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // Raporlama için özet veriler
-$toplam_gelir = $db->query("SELECT SUM(Tutar) FROM aidatlar WHERE OdendiMi = 1")->fetchColumn() ?? 0;
-$toplam_gider = $db->query("SELECT SUM(Tutar) FROM giderler")->fetchColumn() ?? 0;
-$kasa_durumu = $toplam_gelir - $toplam_gider;
+    $toplam_gelir = $db->query("SELECT SUM(Tutar) FROM aidatlar WHERE OdendiMi = 1")->fetchColumn() ?? 0;
+    $toplam_gider = $db->query("SELECT SUM(Tutar) FROM giderler")->fetchColumn() ?? 0;
+    $kasa_durumu = $toplam_gelir - $toplam_gider;
 } catch (PDOException $e) {
     die("Gider verileri çekilirken hata oluştu: " . $e->getMessage());
 }
@@ -74,7 +74,13 @@ require_once 'includes/header.php';
         <h3>Yapılan Giderler</h3>
         <table class="table table-striped table-hover">
             <thead>
-                <tr><th>Tarih</th><th>Gider Türü</th><th>Tutar</th><th>Açıklama</th><th>İşlemler</th></tr>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Gider Türü</th>
+                    <th>Tutar</th>
+                    <th>Açıklama</th>
+                    <th>İşlemler</th>
+                </tr>
             </thead>
             <tbody>
                 <?php if (count($giderler) > 0): ?>
@@ -102,7 +108,9 @@ require_once 'includes/header.php';
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <tr><td colspan="5" class="text-center">Henüz kayıtlı gider bulunmamaktadır.</td></tr>
+                    <tr>
+                        <td colspan="5" class="text-center">Henüz kayıtlı gider bulunmamaktadır.</td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -113,7 +121,9 @@ require_once 'includes/header.php';
 <div class="modal fade" id="editGiderModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title">Gider Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            <div class="modal-header">
+                <h5 class="modal-title">Gider Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <form action="gider_action.php" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
@@ -130,29 +140,29 @@ require_once 'includes/header.php';
 </div>
 
 <script>
-function confirmDelete(giderId) {
-    if (confirm("Bu gider kaydını silmek istediğinizden emin misiniz?")) {
-        document.getElementById('delete-form-' + giderId).submit();
+    function confirmDelete(giderId) {
+        if (confirm("Bu gider kaydını silmek istediğinizden emin misiniz?")) {
+            document.getElementById('delete-form-' + giderId).submit();
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    var editModal = document.getElementById('editGiderModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var giderId = button.getAttribute('data-gider-id');
-        var giderTuru = button.getAttribute('data-gider-turu');
-        var tutar = button.getAttribute('data-tutar');
-        var tarih = button.getAttribute('data-tarih');
-        var aciklama = button.getAttribute('data-aciklama');
+    document.addEventListener('DOMContentLoaded', function() {
+        var editModal = document.getElementById('editGiderModal');
+        editModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var giderId = button.getAttribute('data-gider-id');
+            var giderTuru = button.getAttribute('data-gider-turu');
+            var tutar = button.getAttribute('data-tutar');
+            var tarih = button.getAttribute('data-tarih');
+            var aciklama = button.getAttribute('data-aciklama');
 
-        editModal.querySelector('#edit_gider_id').value = giderId;
-        editModal.querySelector('#edit_gider_turu').value = giderTuru;
-        editModal.querySelector('#edit_tutar').value = tutar;
-        editModal.querySelector('#edit_tarih').value = tarih;
-        editModal.querySelector('#edit_aciklama').value = aciklama;
+            editModal.querySelector('#edit_gider_id').value = giderId;
+            editModal.querySelector('#edit_gider_turu').value = giderTuru;
+            editModal.querySelector('#edit_tutar').value = tutar;
+            editModal.querySelector('#edit_tarih').value = tarih;
+            editModal.querySelector('#edit_aciklama').value = aciklama;
+        });
     });
-});
 </script>
 
 <?php require_once 'includes/footer.php'; ?>

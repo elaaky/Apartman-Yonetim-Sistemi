@@ -36,7 +36,6 @@ try {
     $stmt_borc = $db->prepare($sql_borc);
     $stmt_borc->execute([':daire_id' => $daire_id]);
     $toplam_borc = $stmt_borc->fetchColumn();
-
 } catch (PDOException $e) {
     die("Veri çekme hatası: " . $e->getMessage());
 }
@@ -97,7 +96,9 @@ require_once 'includes/header.php';
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
-                <tr><td colspan="4" class="text-center">Bu daireye ait aidat kaydı bulunmamaktadır.</td></tr>
+                <tr>
+                    <td colspan="4" class="text-center">Bu daireye ait aidat kaydı bulunmamaktadır.</td>
+                </tr>
             <?php endif; ?>
         </tbody>
     </table>

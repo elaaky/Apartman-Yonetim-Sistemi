@@ -43,29 +43,36 @@ require_once 'includes/header.php';
         <h3>Mevcut Binalar</h3>
         <table class="table table-striped table-hover">
             <thead>
-                <tr><th>Bina Adı</th><th>Adres</th><th>İşlemler</th></tr>
+                <tr>
+                    <th>Bina Adı</th>
+                    <th>Adres</th>
+                    <th>İşlemler</th>
+                </tr>
             </thead>
             <tbody>
                 <?php if (count($binalar) > 0): foreach ($binalar as $bina): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($bina['BinaAdi']); ?></td>
+                            <td><?php echo htmlspecialchars($bina['Adres']); ?></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editBinaModal"
+                                    data-bina-id="<?php echo $bina['BinaID']; ?>"
+                                    data-bina-adi="<?php echo htmlspecialchars($bina['BinaAdi']); ?>"
+                                    data-adres="<?php echo htmlspecialchars($bina['Adres']); ?>">
+                                    Düzenle
+                                </button>
+                                <button onclick="confirmDelete(<?php echo $bina['BinaID']; ?>)" class="btn btn-sm btn-danger">Sil</button>
+                                <form id="delete-form-<?php echo $bina['BinaID']; ?>" action="bina_action.php" method="POST" class="d-none">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="bina_id" value="<?php echo $bina['BinaID']; ?>">
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach;
+                else: ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($bina['BinaAdi']); ?></td>
-                        <td><?php echo htmlspecialchars($bina['Adres']); ?></td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editBinaModal"
-                                data-bina-id="<?php echo $bina['BinaID']; ?>"
-                                data-bina-adi="<?php echo htmlspecialchars($bina['BinaAdi']); ?>"
-                                data-adres="<?php echo htmlspecialchars($bina['Adres']); ?>">
-                                Düzenle
-                            </button>
-                            <button onclick="confirmDelete(<?php echo $bina['BinaID']; ?>)" class="btn btn-sm btn-danger">Sil</button>
-                            <form id="delete-form-<?php echo $bina['BinaID']; ?>" action="bina_action.php" method="POST" class="d-none">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="bina_id" value="<?php echo $bina['BinaID']; ?>">
-                            </form>
-                        </td>
+                        <td colspan="3" class="text-center">Kayıtlı bina bulunmamaktadır.</td>
                     </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="3" class="text-center">Kayıtlı bina bulunmamaktadır.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -76,7 +83,9 @@ require_once 'includes/header.php';
 <div class="modal fade" id="editBinaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title">Bina Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-header">
+                <h5 class="modal-title">Bina Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
             <form action="bina_action.php" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
@@ -91,20 +100,20 @@ require_once 'includes/header.php';
 </div>
 
 <script>
-function confirmDelete(binaId) {
-    if (confirm("Bu binayı silmek istediğinizden emin misiniz? Bu binaya ait tüm daireler ve sakinler de silinecektir! Bu işlem geri alınamaz!")) {
-        document.getElementById('delete-form-' + binaId).submit();
+    function confirmDelete(binaId) {
+        if (confirm("Bu binayı silmek istediğinizden emin misiniz? Bu binaya ait tüm daireler ve sakinler de silinecektir! Bu işlem geri alınamaz!")) {
+            document.getElementById('delete-form-' + binaId).submit();
+        }
     }
-}
-document.addEventListener('DOMContentLoaded', function () {
-    var editModal = document.getElementById('editBinaModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        editModal.querySelector('#edit_bina_id').value = button.getAttribute('data-bina-id');
-        editModal.querySelector('#edit_bina_adi').value = button.getAttribute('data-bina-adi');
-        editModal.querySelector('#edit_adres').value = button.getAttribute('data-adres');
+    document.addEventListener('DOMContentLoaded', function() {
+        var editModal = document.getElementById('editBinaModal');
+        editModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            editModal.querySelector('#edit_bina_id').value = button.getAttribute('data-bina-id');
+            editModal.querySelector('#edit_bina_adi').value = button.getAttribute('data-bina-adi');
+            editModal.querySelector('#edit_adres').value = button.getAttribute('data-adres');
+        });
     });
-});
 </script>
 
 <?php require_once 'includes/footer.php'; ?>

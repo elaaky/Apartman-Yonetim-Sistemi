@@ -7,11 +7,11 @@ require_once 'includes/header.php'; // veya header_guest.php
             <div class="card-body">
                 <h3 class="card-title text-center mb-4">Şifre Sıfırlama</h3>
                 <p class="text-center text-muted">Sisteme kayıtlı email adresinizi girin. Yönetici tarafından size yeni bir şifre atanacaktır.</p>
-                
-                <?php if(isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+
+                <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
                     <div class="alert alert-success">Şifre sıfırlama talebiniz alınmıştır. Yönetici en kısa sürede sizinle iletişime geçecektir.</div>
                 <?php endif; ?>
-                
+
                 <form action="sifre_sifirlama_action.php" method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Adresiniz</label>

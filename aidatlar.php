@@ -18,7 +18,7 @@ try {
                       ORDER BY a.SonOdemeTarihi ASC";
     $stmt_odenmemis = $db->query($sql_odenmemis);
     $odenmemis_aidatlar = $stmt_odenmemis->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Ödenmiş Aidatlar
     $sql_odenmis = "SELECT a.*, d.DaireNo, b.BinaAdi, s.Ad, s.Soyad
                     FROM aidatlar a
@@ -34,7 +34,6 @@ try {
     $sql_daireler = "SELECT d.DaireID, d.DaireNo, b.BinaAdi FROM daireler d JOIN binalar b ON d.BinaID = b.BinaID ORDER BY b.BinaAdi, d.DaireNo";
     $stmt_daireler = $db->query($sql_daireler);
     $daireler = $stmt_daireler->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Veri çekme hatası: " . $e->getMessage());
 }
@@ -66,16 +65,16 @@ require_once 'includes/header.php';
                         <label for="daire_id" class="form-label">Daire Seç</label>
                         <select class="form-select" id="daire_id" name="daire_id" required>
                             <option value="">Seçin...</option>
-                            <?php foreach($daireler as $daire): ?>
+                            <?php foreach ($daireler as $daire): ?>
                                 <option value="<?php echo $daire['DaireID']; ?>"><?php echo htmlspecialchars($daire['BinaAdi'] . ' - Daire ' . $daire['DaireNo']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-                     <div class="mb-3">
+                    <div class="mb-3">
                         <label for="manuel_tutar" class="form-label">Borç Tutarı</label>
                         <input type="number" step="0.01" class="form-control" id="manuel_tutar" name="tutar" required>
                     </div>
-                     <div class="mb-3">
+                    <div class="mb-3">
                         <label for="donem" class="form-label">Dönem (Ay Yıl)</label>
                         <input type="text" class="form-control" id="donem" name="donem" value="<?php echo date('F Y'); ?>" required>
                     </div>
@@ -100,26 +99,37 @@ require_once 'includes/header.php';
             <!-- Ödenmemiş Aidatlar Paneli -->
             <div class="tab-pane fade show active" id="odenmemis" role="tabpanel">
                 <table class="table table-hover mt-3">
-                    <thead><tr><th>Daire</th><th>Ev Sahibi</th><th>Dönem</th><th>Tutar</th><th>Son Ödeme</th><th>İşlem</th></tr></thead>
-                    <tbody>
-                        <?php foreach($odenmemis_aidatlar as $aidat): ?>
+                    <thead>
                         <tr>
-                            <td><?php echo htmlspecialchars($aidat['BinaAdi'] . ' - ' . $aidat['DaireNo']); ?></td>
-                            <td><?php echo htmlspecialchars($aidat['Ad'] . ' ' . $aidat['Soyad']); ?></td>
-                            <td><?php echo htmlspecialchars($aidat['Donem']); ?></td>
-                            <td><?php echo number_format($aidat['Tutar'], 2); ?> TL</td>
-                            <td><?php echo date('d.m.Y', strtotime($aidat['SonOdemeTarihi'])); ?></td>
-                            <td>
-                                <form action="aidat_action.php" method="POST" class="d-inline">
-                                    <input type="hidden" name="action" value="odeme_yap">
-                                    <input type="hidden" name="aidat_id" value="<?php echo $aidat['AidatID']; ?>">
-                                    <button type="submit" class="btn btn-sm btn-success">Ödendi İşaretle</button>
-                                </form>
-                            </td>
+                            <th>Daire</th>
+                            <th>Ev Sahibi</th>
+                            <th>Dönem</th>
+                            <th>Tutar</th>
+                            <th>Son Ödeme</th>
+                            <th>İşlem</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($odenmemis_aidatlar as $aidat): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($aidat['BinaAdi'] . ' - ' . $aidat['DaireNo']); ?></td>
+                                <td><?php echo htmlspecialchars($aidat['Ad'] . ' ' . $aidat['Soyad']); ?></td>
+                                <td><?php echo htmlspecialchars($aidat['Donem']); ?></td>
+                                <td><?php echo number_format($aidat['Tutar'], 2); ?> TL</td>
+                                <td><?php echo date('d.m.Y', strtotime($aidat['SonOdemeTarihi'])); ?></td>
+                                <td>
+                                    <form action="aidat_action.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="action" value="odeme_yap">
+                                        <input type="hidden" name="aidat_id" value="<?php echo $aidat['AidatID']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-success">Ödendi İşaretle</button>
+                                    </form>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
-                        <?php if(count($odenmemis_aidatlar) == 0): ?>
-                        <tr><td colspan="6" class="text-center">Ödenmemiş borç bulunmamaktadır.</td></tr>
+                        <?php if (count($odenmemis_aidatlar) == 0): ?>
+                            <tr>
+                                <td colspan="6" class="text-center">Ödenmemiş borç bulunmamaktadır.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -127,26 +137,37 @@ require_once 'includes/header.php';
             <!-- Ödenmiş Aidatlar Paneli -->
             <div class="tab-pane fade" id="odenmis" role="tabpanel">
                 <table class="table table-hover mt-3">
-                     <thead><tr><th>Daire</th><th>Ev Sahibi</th><th>Dönem</th><th>Tutar</th><th>Ödeme Tarihi</th><th>İşlem</th></tr></thead>
-                    <tbody>
-                        <?php foreach($odenmis_aidatlar as $aidat): ?>
+                    <thead>
                         <tr>
-                            <td><?php echo htmlspecialchars($aidat['BinaAdi'] . ' - ' . $aidat['DaireNo']); ?></td>
-                            <td><?php echo htmlspecialchars($aidat['Ad'] . ' ' . $aidat['Soyad']); ?></td>
-                            <td><?php echo htmlspecialchars($aidat['Donem']); ?></td>
-                            <td><?php echo number_format($aidat['Tutar'], 2); ?> TL</td>
-                            <td><?php echo date('d.m.Y', strtotime($aidat['OdemeTarihi'])); ?></td>
-                             <td>
-                                <form action="aidat_action.php" method="POST" class="d-inline">
-                                    <input type="hidden" name="action" value="odeme_iptal">
-                                    <input type="hidden" name="aidat_id" value="<?php echo $aidat['AidatID']; ?>">
-                                    <button type="submit" class="btn btn-sm btn-secondary">İptal Et</button>
-                                </form>
-                            </td>
+                            <th>Daire</th>
+                            <th>Ev Sahibi</th>
+                            <th>Dönem</th>
+                            <th>Tutar</th>
+                            <th>Ödeme Tarihi</th>
+                            <th>İşlem</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($odenmis_aidatlar as $aidat): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($aidat['BinaAdi'] . ' - ' . $aidat['DaireNo']); ?></td>
+                                <td><?php echo htmlspecialchars($aidat['Ad'] . ' ' . $aidat['Soyad']); ?></td>
+                                <td><?php echo htmlspecialchars($aidat['Donem']); ?></td>
+                                <td><?php echo number_format($aidat['Tutar'], 2); ?> TL</td>
+                                <td><?php echo date('d.m.Y', strtotime($aidat['OdemeTarihi'])); ?></td>
+                                <td>
+                                    <form action="aidat_action.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="action" value="odeme_iptal">
+                                        <input type="hidden" name="aidat_id" value="<?php echo $aidat['AidatID']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-secondary">İptal Et</button>
+                                    </form>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
-                         <?php if(count($odenmis_aidatlar) == 0): ?>
-                        <tr><td colspan="6" class="text-center">Kayıtlı ödeme bulunmamaktadır.</td></tr>
+                        <?php if (count($odenmis_aidatlar) == 0): ?>
+                            <tr>
+                                <td colspan="6" class="text-center">Kayıtlı ödeme bulunmamaktadır.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>

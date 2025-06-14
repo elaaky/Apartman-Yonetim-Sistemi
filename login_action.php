@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT * FROM Yöneticiler WHERE KullaniciAdi = :kullanici_adi";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':kullanici_adi', $kullanici_adi);
-        
+
         // Sorguyu çalıştır
         $stmt->execute();
 
@@ -52,14 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: login.php?error=nouser");
             exit();
         }
-
     } catch (PDOException $e) {
         die("Sorgu hatası: " . $e->getMessage());
     }
-
 } else {
     // Doğrudan bu sayfaya erişilirse, ana sayfaya yönlendir
     header("Location: index.php");
     exit();
 }
-?>

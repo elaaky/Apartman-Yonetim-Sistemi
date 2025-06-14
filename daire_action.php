@@ -8,7 +8,7 @@ require_once 'includes/db_connect.php';
 
 // Formdan gelen verileri kontrol et
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
-    
+
     // Ekleme işlemi
     if ($_POST['action'] == 'add') {
         $bina_id = $_POST['bina_id'];
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             die("Ekleme hatası: " . $e->getMessage());
         }
     }
-    
+
     // Gelecekte güncelleme ve silme işlemleri buraya eklenecek
     // if ($_POST['action'] == 'update') { ... }
     // if ($_POST['action'] == 'delete') { ... }
@@ -93,9 +93,7 @@ if ($_POST['action'] == 'update') {
 
         header('Location: daireler.php?status=updated');
         exit();
-
     } catch (PDOException $e) {
         die("Güncelleme hatası: " . $e->getMessage());
     }
 }
-?>

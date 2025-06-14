@@ -16,7 +16,6 @@ try {
     // Yeni daire eklemek için binaları çek
     $binalar_stmt = $db->query("SELECT * FROM binalar ORDER BY BinaAdi");
     $binalar = $binalar_stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Veri çekme hatası: " . $e->getMessage());
 }
@@ -73,25 +72,25 @@ try {
                             <td><?php echo htmlspecialchars($daire['DaireNo']); ?></td>
                             <td><?php echo htmlspecialchars($daire['Kat']); ?></td>
                             <td>
-    <a href="#" class="btn btn-sm btn-warning edit-btn" 
-    data-bs-toggle="modal" 
-    data-bs-target="#editDaireModal"
-    data-daire-id="<?php echo $daire['DaireID']; ?>"
-    data-bina-id="<?php echo $daire['BinaID']; ?>"
-    data-daire-no="<?php echo htmlspecialchars($daire['DaireNo']); ?>"
-    data-kat="<?php echo htmlspecialchars($daire['Kat']); ?>">
-    Düzenle
-</a>
-    
-    <!-- Silme butonu artık bir JavaScript fonksiyonunu çağırıyor -->
-    <button onclick="confirmDelete(<?php echo $daire['DaireID']; ?>)" class="btn btn-sm btn-danger">Sil</button>
+                                <a href="#" class="btn btn-sm btn-warning edit-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editDaireModal"
+                                    data-daire-id="<?php echo $daire['DaireID']; ?>"
+                                    data-bina-id="<?php echo $daire['BinaID']; ?>"
+                                    data-daire-no="<?php echo htmlspecialchars($daire['DaireNo']); ?>"
+                                    data-kat="<?php echo htmlspecialchars($daire['Kat']); ?>">
+                                    Düzenle
+                                </a>
 
-    <!-- Her satır için gizli bir silme formu -->
-    <form id="delete-form-<?php echo $daire['DaireID']; ?>" action="daire_action.php" method="POST" style="display: none;">
-        <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="daire_id" value="<?php echo $daire['DaireID']; ?>">
-    </form>
-</td>
+                                <!-- Silme butonu artık bir JavaScript fonksiyonunu çağırıyor -->
+                                <button onclick="confirmDelete(<?php echo $daire['DaireID']; ?>)" class="btn btn-sm btn-danger">Sil</button>
+
+                                <!-- Her satır için gizli bir silme formu -->
+                                <form id="delete-form-<?php echo $daire['DaireID']; ?>" action="daire_action.php" method="POST" style="display: none;">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="daire_id" value="<?php echo $daire['DaireID']; ?>">
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -142,40 +141,40 @@ try {
     </div>
 </div>
 <script>
-function confirmDelete(daireId) {
-    // ... (mevcut silme kodu burada kalacak)
-    if (confirm("Bu daireyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!")) {
-        document.getElementById('delete-form-' + daireId).submit();
+    function confirmDelete(daireId) {
+        // ... (mevcut silme kodu burada kalacak)
+        if (confirm("Bu daireyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!")) {
+            document.getElementById('delete-form-' + daireId).submit();
+        }
     }
-}
 
-// Modal tetiklendiğinde çalışacak kod
-document.addEventListener('DOMContentLoaded', function () {
-    var editModal = document.getElementById('editDaireModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        // Butonu tetikleyen elementi al
-        var button = event.relatedTarget;
+    // Modal tetiklendiğinde çalışacak kod
+    document.addEventListener('DOMContentLoaded', function() {
+        var editModal = document.getElementById('editDaireModal');
+        editModal.addEventListener('show.bs.modal', function(event) {
+            // Butonu tetikleyen elementi al
+            var button = event.relatedTarget;
 
-        // data-* niteliklerinden veriyi çek
-        var daireId = button.getAttribute('data-daire-id');
-        var binaId = button.getAttribute('data-bina-id');
-        var daireNo = button.getAttribute('data-daire-no');
-        var kat = button.getAttribute('data-kat');
+            // data-* niteliklerinden veriyi çek
+            var daireId = button.getAttribute('data-daire-id');
+            var binaId = button.getAttribute('data-bina-id');
+            var daireNo = button.getAttribute('data-daire-no');
+            var kat = button.getAttribute('data-kat');
 
-        // Modal'ın içindeki form elemanlarını seç
-        var modalTitle = editModal.querySelector('.modal-title');
-        var inputDaireId = editModal.querySelector('#edit_daire_id');
-        var selectBinaId = editModal.querySelector('#edit_bina_id');
-        var inputDaireNo = editModal.querySelector('#edit_daire_no');
-        var inputKat = editModal.querySelector('#edit_kat');
+            // Modal'ın içindeki form elemanlarını seç
+            var modalTitle = editModal.querySelector('.modal-title');
+            var inputDaireId = editModal.querySelector('#edit_daire_id');
+            var selectBinaId = editModal.querySelector('#edit_bina_id');
+            var inputDaireNo = editModal.querySelector('#edit_daire_no');
+            var inputKat = editModal.querySelector('#edit_kat');
 
-        // Form elemanlarını gelen veri ile doldur
-        modalTitle.textContent = 'Daire Düzenle: ' + daireNo;
-        inputDaireId.value = daireId;
-        selectBinaId.value = binaId;
-        inputDaireNo.value = daireNo;
-        inputKat.value = kat;
+            // Form elemanlarını gelen veri ile doldur
+            modalTitle.textContent = 'Daire Düzenle: ' + daireNo;
+            inputDaireId.value = daireId;
+            selectBinaId.value = binaId;
+            inputDaireNo.value = daireNo;
+            inputKat.value = kat;
+        });
     });
-});
 </script>
 <?php require_once 'includes/footer.php'; ?>

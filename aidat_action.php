@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             die("Ödeme iptal hatası: " . $e->getMessage());
         }
     }
-    
+
     // MANUEL AİDAT EKLEME (Bu kısmı en sona ekledim)
     if ($_POST['action'] == 'manuel_ekle') {
         $daire_id = $_POST['daire_id'];
@@ -96,9 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             die("Manuel ekleme hatası: " . $e->getMessage());
         }
     }
-
 } else {
     header('Location: aidatlar.php');
     exit();
 }
-?>

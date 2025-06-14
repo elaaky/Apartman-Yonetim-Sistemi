@@ -72,11 +72,11 @@ require_once 'includes/header.php';
 </div>
 
 <script>
-function confirmDelete(duyuruId) {
-    if (confirm("Bu duyuruyu silmek istediğinizden emin misiniz?")) {
-        document.getElementById('delete-form-' + duyuruId).submit();
+    function confirmDelete(duyuruId) {
+        if (confirm("Bu duyuruyu silmek istediğinizden emin misiniz?")) {
+            document.getElementById('delete-form-' + duyuruId).submit();
+        }
     }
-}
 </script>
 
 <?php require_once 'includes/footer.php'; ?>

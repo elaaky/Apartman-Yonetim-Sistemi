@@ -54,11 +54,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     WHERE SakinID = :sakin_id";
             $stmt = $db->prepare($sql);
             $stmt->execute([
-                ':ad' => $ad, 
-                ':soyad' => $soyad, 
-                ':daire_id' => $daire_id, 
-                ':telefon' => $telefon, 
-                ':email' => $email, 
+                ':ad' => $ad,
+                ':soyad' => $soyad,
+                ':daire_id' => $daire_id,
+                ':telefon' => $telefon,
+                ':email' => $email,
                 ':ev_sahibi_mi' => $ev_sahibi_mi,
                 ':sakin_id' => $sakin_id
             ]);
@@ -89,10 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             exit();
         }
     }
-
 } else {
     // Doğrudan erişim engeli
     header('Location: sakinler.php');
     exit();
 }
-?>

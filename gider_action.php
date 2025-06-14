@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             die("Gider ekleme hatası: " . $e->getMessage());
         }
     }
-    
+
     // GİDER GÜNCELLEME
     if ($_POST['action'] == 'update') {
         $gider_id = $_POST['gider_id'];
@@ -90,10 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             exit();
         }
     }
-
 } else {
     // Doğrudan erişim engeli
     header('Location: giderler.php');
     exit();
 }
-?>

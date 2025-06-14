@@ -14,10 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Biz sadece talebin alındığını belirterek geri yönlendiriyoruz.
         // İleri seviye: Buraya, yeni bir "sifirlama_talepleri" tablosuna kayıt ekleme kodu yazılabilir.
     }
-    
+
     // E-posta bulunsa da bulunmasa da aynı mesajı göstererek
     // kötü niyetli kullanıcıların hangi e-postaların kayıtlı olduğunu öğrenmesini engelliyoruz.
     header("Location: sifre_sifirlama.php?status=success");
     exit();
 }
-?>

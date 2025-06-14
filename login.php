@@ -10,24 +10,24 @@ require_once 'includes/header.php'; // Misafirler için farklı bir header yapab
                 <h3 class="card-title text-center mb-4">Yönetici Girişi</h3>
 
                 <?php
-if (isset($_GET['error'])) {
-    $error_msg = '';
-    if ($_GET['error'] == 'emptyfields') {
-        $error_msg = 'Lütfen tüm alanları doldurun.';
-    } elseif ($_GET['error'] == 'wrongpassword') {
-        $error_msg = 'Hatalı kullanıcı adı veya şifre.';
-    } elseif ($_GET['error'] == 'nouser') {
-        $error_msg = 'Böyle bir kullanıcı bulunamadı.';
-    }
-    
-    if ($error_msg) {
-        echo '<div class="alert alert-danger">' . $error_msg . '</div>';
-    }
-}
-?>
-                
+                if (isset($_GET['error'])) {
+                    $error_msg = '';
+                    if ($_GET['error'] == 'emptyfields') {
+                        $error_msg = 'Lütfen tüm alanları doldurun.';
+                    } elseif ($_GET['error'] == 'wrongpassword') {
+                        $error_msg = 'Hatalı kullanıcı adı veya şifre.';
+                    } elseif ($_GET['error'] == 'nouser') {
+                        $error_msg = 'Böyle bir kullanıcı bulunamadı.';
+                    }
+
+                    if ($error_msg) {
+                        echo '<div class="alert alert-danger">' . $error_msg . '</div>';
+                    }
+                }
+                ?>
+
                 <!-- Hata mesajları burada gösterilecek -->
-                
+
                 <form action="login_action.php" method="POST">
                     <div class="mb-3">
                         <label for="kullanici_adi" class="form-label">Kullanıcı Adı</label>
@@ -41,9 +41,9 @@ if (isset($_GET['error'])) {
                         <button type="submit" class="btn btn-primary">Giriş Yap</button>
                     </div>
                     <div class="text-center mt-3">
-    <a href="sifre_sifirlama.php">Şifremi Unuttum</a>
-</div>
-            
+                        <a href="sifre_sifirlama.php">Şifremi Unuttum</a>
+                    </div>
+
                 </form>
             </div>
         </div>

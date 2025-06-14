@@ -24,7 +24,6 @@ try {
                      ORDER BY b.BinaAdi, d.DaireNo";
     $stmt_daireler = $db->query($sql_daireler);
     $daireler = $stmt_daireler->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Veri çekme hatası: " . $e->getMessage());
 }
@@ -42,7 +41,9 @@ require_once 'includes/header.php';
                     <input type="hidden" name="action" value="add">
                     <div class="mb-3"><label for="ad" class="form-label">Ad</label><input type="text" class="form-control" id="ad" name="ad" required></div>
                     <div class="mb-3"><label for="soyad" class="form-label">Soyad</label><input type="text" class="form-control" id="soyad" name="soyad" required></div>
-                    <div class="mb-3"><label for="daire_id" class="form-label">Oturduğu Daire</label><select class="form-select" id="daire_id" name="daire_id" required><option value="">Daire Seçin...</option><?php foreach ($daireler as $daire): ?><option value="<?php echo $daire['DaireID']; ?>"><?php echo htmlspecialchars($daire['BinaAdi'] . ' - Daire ' . $daire['DaireNo']); ?></option><?php endforeach; ?></select></div>
+                    <div class="mb-3"><label for="daire_id" class="form-label">Oturduğu Daire</label><select class="form-select" id="daire_id" name="daire_id" required>
+                            <option value="">Daire Seçin...</option><?php foreach ($daireler as $daire): ?><option value="<?php echo $daire['DaireID']; ?>"><?php echo htmlspecialchars($daire['BinaAdi'] . ' - Daire ' . $daire['DaireNo']); ?></option><?php endforeach; ?>
+                        </select></div>
                     <div class="mb-3"><label for="telefon" class="form-label">Telefon</label><input type="text" class="form-control" id="telefon" name="telefon"></div>
                     <div class="mb-3"><label for="email" class="form-label">Email</label><input type="email" class="form-control" id="email" name="email"></div>
                     <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" id="ev_sahibi_mi" name="ev_sahibi_mi" value="1" checked><label class="form-check-label" for="ev_sahibi_mi">Ev Sahibi</label></div>
@@ -75,7 +76,7 @@ require_once 'includes/header.php';
                                 <!-- RAPOR LİNKİ EKLENDİ -->
                                 <a href="daire_detay.php?daire_id=<?php echo $sakin['DaireID']; ?>" class="btn btn-sm btn-outline-info py-0 px-1" title="Daire Borç Dökümü">
                                     📋
-                                a>
+                                    a>
                             </td>
                             <td><?php echo htmlspecialchars($sakin['Telefon']); ?></td>
                             <td><?php echo $sakin['EvSahibiMi'] ? '<span class="badge bg-success">Ev Sahibi</span>' : '<span class="badge bg-info">Kiracı</span>'; ?></td>
@@ -99,7 +100,9 @@ require_once 'includes/header.php';
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <tr><td colspan="5" class="text-center">Henüz kayıtlı sakin bulunmamaktadır.</td></tr>
+                    <tr>
+                        <td colspan="5" class="text-center">Henüz kayıtlı sakin bulunmamaktadır.</td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -110,14 +113,18 @@ require_once 'includes/header.php';
 <div class="modal fade" id="editSakinModal" tabindex="-1" aria-labelledby="editSakinModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title" id="editSakinModalLabel">Sakin Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSakinModalLabel">Sakin Bilgilerini Düzenle</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <form action="sakin_action.php" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="sakin_id" id="edit_sakin_id">
                     <div class="mb-3"><label for="edit_ad" class="form-label">Ad</label><input type="text" class="form-control" id="edit_ad" name="ad" required></div>
                     <div class="mb-3"><label for="edit_soyad" class="form-label">Soyad</label><input type="text" class="form-control" id="edit_soyad" name="soyad" required></div>
-                    <div class="mb-3"><label for="edit_daire_id" class="form-label">Oturduğu Daire</label><select class="form-select" id="edit_daire_id" name="daire_id" required><option value="">Daire Seçin...</option><?php foreach ($daireler as $daire): ?><option value="<?php echo $daire['DaireID']; ?>"><?php echo htmlspecialchars($daire['BinaAdi'] . ' - Daire ' . $daire['DaireNo']); ?></option><?php endforeach; ?></select></div>
+                    <div class="mb-3"><label for="edit_daire_id" class="form-label">Oturduğu Daire</label><select class="form-select" id="edit_daire_id" name="daire_id" required>
+                            <option value="">Daire Seçin...</option><?php foreach ($daireler as $daire): ?><option value="<?php echo $daire['DaireID']; ?>"><?php echo htmlspecialchars($daire['BinaAdi'] . ' - Daire ' . $daire['DaireNo']); ?></option><?php endforeach; ?>
+                        </select></div>
                     <div class="mb-3"><label for="edit_telefon" class="form-label">Telefon</label><input type="text" class="form-control" id="edit_telefon" name="telefon"></div>
                     <div class="mb-3"><label for="edit_email" class="form-label">Email</label><input type="email" class="form-control" id="edit_email" name="email"></div>
                     <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" id="edit_ev_sahibi_mi" name="ev_sahibi_mi" value="1"><label class="form-check-label" for="edit_ev_sahibi_mi">Ev Sahibi</label></div>
@@ -129,43 +136,43 @@ require_once 'includes/header.php';
 </div>
 
 <script>
-function confirmDelete(sakinId) {
-    if (confirm("Bu sakini silmek istediğinizden emin misiniz?")) {
-        document.getElementById('delete-form-' + sakinId).submit();
+    function confirmDelete(sakinId) {
+        if (confirm("Bu sakini silmek istediğinizden emin misiniz?")) {
+            document.getElementById('delete-form-' + sakinId).submit();
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    var editModal = document.getElementById('editSakinModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var sakinId = button.getAttribute('data-sakin-id');
-        var ad = button.getAttribute('data-ad');
-        var soyad = button.getAttribute('data-soyad');
-        var daireId = button.getAttribute('data-daire-id');
-        var telefon = button.getAttribute('data-telefon');
-        var email = button.getAttribute('data-email');
-        var evSahibiMi = button.getAttribute('data-ev-sahibi-mi');
+    document.addEventListener('DOMContentLoaded', function() {
+        var editModal = document.getElementById('editSakinModal');
+        editModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var sakinId = button.getAttribute('data-sakin-id');
+            var ad = button.getAttribute('data-ad');
+            var soyad = button.getAttribute('data-soyad');
+            var daireId = button.getAttribute('data-daire-id');
+            var telefon = button.getAttribute('data-telefon');
+            var email = button.getAttribute('data-email');
+            var evSahibiMi = button.getAttribute('data-ev-sahibi-mi');
 
-        var modalTitle = editModal.querySelector('.modal-title');
-        var inputSakinId = editModal.querySelector('#edit_sakin_id');
-        var inputAd = editModal.querySelector('#edit_ad');
-        var inputSoyad = editModal.querySelector('#edit_soyad');
-        var selectDaireId = editModal.querySelector('#edit_daire_id');
-        var inputTelefon = editModal.querySelector('#edit_telefon');
-        var inputEmail = editModal.querySelector('#edit_email');
-        var checkEvSahibiMi = editModal.querySelector('#edit_ev_sahibi_mi');
+            var modalTitle = editModal.querySelector('.modal-title');
+            var inputSakinId = editModal.querySelector('#edit_sakin_id');
+            var inputAd = editModal.querySelector('#edit_ad');
+            var inputSoyad = editModal.querySelector('#edit_soyad');
+            var selectDaireId = editModal.querySelector('#edit_daire_id');
+            var inputTelefon = editModal.querySelector('#edit_telefon');
+            var inputEmail = editModal.querySelector('#edit_email');
+            var checkEvSahibiMi = editModal.querySelector('#edit_ev_sahibi_mi');
 
-        modalTitle.textContent = 'Düzenle: ' + ad + ' ' + soyad;
-        inputSakinId.value = sakinId;
-        inputAd.value = ad;
-        inputSoyad.value = soyad;
-        selectDaireId.value = daireId;
-        inputTelefon.value = telefon;
-        inputEmail.value = email;
-        checkEvSahibiMi.checked = (evSahibiMi == 1);
+            modalTitle.textContent = 'Düzenle: ' + ad + ' ' + soyad;
+            inputSakinId.value = sakinId;
+            inputAd.value = ad;
+            inputSoyad.value = soyad;
+            selectDaireId.value = daireId;
+            inputTelefon.value = telefon;
+            inputEmail.value = email;
+            checkEvSahibiMi.checked = (evSahibiMi == 1);
+        });
     });
-});
 </script>
 
 <?php require_once 'includes/footer.php'; ?>
