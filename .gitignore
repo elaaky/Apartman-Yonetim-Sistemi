@@ -1,0 +1,15 @@
+# Composer
+/vendor/
+composer.lock
+
+# Log dosyaları
+*.log
+logs/
+
+# IDE/Editör dosyaları
+.idea/
+.vscode/
+
+# İşletim sistemi dosyaları
+.DS_Store
+Thumbs.db
